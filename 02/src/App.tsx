@@ -44,9 +44,11 @@ function App() {
       <p>Counter: {counter}</p>
       <button className="btn btn-warning" onClick={() => {setMsg(msg === "Hi mom!" ? "Hi dad" : "Hi mom!")}}>Change msg!</button>
       <button className="btn btn-primary" onClick={handleBtnClick}>Click me!</button>
-<hr/>
-<button className="btn btn-primary" onClick={()=> setIsVisible(!isVisible)}>{isVisible ? "Hide Salary" : "Show Salary"}</button>
-{isVisible && (<>    <h2>Salary</h2>
+      <hr/>
+
+      <button className={`${isVisible ? "btn btn-danger" : "btn btn-success"}`} onClick={()=> setIsVisible(!isVisible)}>{isVisible ? "Hide Salary" : "Show Salary"}</button>
+
+      {isVisible && (<>    <h2>Salary</h2>
       <h3>Salary per hour: {salary} £</h3>
       <button className="btn btn-primary" onClick={() => adjustSalary(+1)}>Raise 1£</button>
       <button className="btn btn-primary" onClick={() => adjustSalary(+5)}>Raise 5£</button>
@@ -56,6 +58,7 @@ function App() {
       <hr/>
       <ul>
       </ul></> )}
+
         {posts.map(post => <li key={post.id}>{post.title} ({post.likes} likes)</li>)}
     </div>
   )
