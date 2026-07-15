@@ -1,11 +1,62 @@
 import "./assets/scss/App.scss";
+import { useState } from "react";
+
+interface Post {
+  id: number; 
+  title: string; 
+  likes: number;
+}
 
 function App() {
+  const [ counter, setCounter] = useState(0)
+  const [msg, setMsg] = useState("Hi mom!")
+  const [posts, setPosts] = useState<Post[]>([  //tom array är typ never
+    {id: 1, title: "react rocks", likes: 33},
+    {id: 2,  title: "jsx moar rocks", likes: 27},
+    {id: 3,  title: "statefull?", likes: 433},
+  ])
+  const [ salary, setSalary ] = useState(10)
+  // const [ salaryMsg, setSalaryMsg ] = useState("Salary went below 10£")
+
+  const handleBtnClick= () => {
+    console.log("handle counter before click ", {counter})
+    setCounter(counter + 1)
+    console.log("handle counter after click ", {counter})
+  }
+
+  console.log("app is rendering...")
+
+  const adjustSalary = (amount: number) => {
+    // setSalary(salary + amount >= 10 ? salary + amount : 5 )
+
+    if(amount + salary < 5){
+      setSalary(5)
+      return
+    }
+
+    setSalary(salary + amount)
+  }
 
   return (
-    <>
+    <div className="container py-2 border border-danger">
       <h1>02-react-basics</h1>
-    </>
+      <p>{msg}</p>
+      <p>Counter: {counter}</p>
+      <button className="btn btn-warning" onClick={() => {setMsg(msg === "Hi mom!" ? "Hi dad" : "Hi mom!")}}>Change msg!</button>
+      <button className="btn btn-primary" onClick={handleBtnClick}>Click me!</button>
+
+      <h2>Salary</h2>
+      <h3>Salary per hour: {salary} £</h3>
+      <button className="btn btn-primary" onClick={() => adjustSalary(+1)}>Raise 1£</button>
+      <button className="btn btn-primary" onClick={() => adjustSalary(+5)}>Raise 5£</button>
+      <button className="btn btn-danger" onClick={() => adjustSalary(-1)}>Decrease 1£</button>
+      <button className="btn btn-danger" onClick={() => adjustSalary(-5)}>Decrease 5£</button>
+      {salary < 10 && <p className="alert alert-warning">Salary went below 10£</p>}
+      <hr/>
+      <ul>
+        {posts.map(post => <li key={post.id}>{post.title} ({post.likes} likes)</li>)}
+      </ul>
+    </div>
   )
 }
 
