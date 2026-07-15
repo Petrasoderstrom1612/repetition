@@ -16,7 +16,7 @@ function App() {
     {id: 3,  title: "statefull?", likes: 433},
   ])
   const [ salary, setSalary ] = useState(10)
-  // const [ salaryMsg, setSalaryMsg ] = useState("Salary went below 10£")
+  const [isVisible, setIsVisible] = useState(true)
 
   const handleBtnClick= () => {
     console.log("handle counter before click ", {counter})
@@ -44,18 +44,19 @@ function App() {
       <p>Counter: {counter}</p>
       <button className="btn btn-warning" onClick={() => {setMsg(msg === "Hi mom!" ? "Hi dad" : "Hi mom!")}}>Change msg!</button>
       <button className="btn btn-primary" onClick={handleBtnClick}>Click me!</button>
-
-      <h2>Salary</h2>
+<hr/>
+<button className="btn btn-primary" onClick={()=> setIsVisible(!isVisible)}>{isVisible ? "Hide Salary" : "Show Salary"}</button>
+{isVisible && (<>    <h2>Salary</h2>
       <h3>Salary per hour: {salary} £</h3>
       <button className="btn btn-primary" onClick={() => adjustSalary(+1)}>Raise 1£</button>
       <button className="btn btn-primary" onClick={() => adjustSalary(+5)}>Raise 5£</button>
-      <button className="btn btn-danger" onClick={() => adjustSalary(-1)}>Decrease 1£</button>
-      <button className="btn btn-danger" onClick={() => adjustSalary(-5)}>Decrease 5£</button>
+      <button className="btn btn-danger" onClick={() => adjustSalary(-1)} disabled={salary === 5}>Decrease 1£</button>
+      <button className="btn btn-danger" onClick={() => adjustSalary(-5)} disabled={salary === 5}>Decrease 5£</button>
       {salary < 10 && <p className="alert alert-warning">Salary went below 10£</p>}
       <hr/>
       <ul>
+      </ul></> )}
         {posts.map(post => <li key={post.id}>{post.title} ({post.likes} likes)</li>)}
-      </ul>
     </div>
   )
 }
