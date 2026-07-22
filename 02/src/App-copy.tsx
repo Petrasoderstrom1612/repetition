@@ -6,7 +6,6 @@ interface Post {
     likes: number;
 }
 const App = () => {
-  const [msg, setMsg] = useState("")
   const [newTitle, setNewTitle] = useState("")
   const [posts, setPosts] = useState<Post[]>([  //tom array är typ never
   {id: 1, title: "react rocks", likes: 33}, 
@@ -20,30 +19,17 @@ const App = () => {
     setNewTitle("")
   }
 
-  const handleLike = (post: Post) => {
-    console.log("the clicked post", post)
-    post.likes++
-    setPosts([...posts])
-  }
-
-  const removePost = (clickedPost: Post) => {
-    const postsToKeep = posts.filter(p => p.id !== clickedPost.id)
-    setPosts(postsToKeep)
-  }
-
-  console.log("...app is rendering")
 
   return (
     <>
-    <button onClick={()=>{setMsg(msg === "" ? "hi" : "")}}>{msg}</button>
     <div>Hello</div>
     {posts.length > 0 ?
        (<ul>
             {posts.map(post => 
             <li key={post.id}>
             {post.title} {post.likes} likes
-            <button className="btn btn-success btn-sm ms-1" onClick={() => handleLike(post)}>👍🏻</button>
-            <button className="btn btn-danger btn-sm ms-1" onClick={() => {removePost(post)}}>❌</button>
+            <button className="btn btn-success btn-sm ms-1" onClick={() => {setPosts(posts.map(p => post.id === p.id ? {...p, likes: p.likes + 1} : p))}}>👍🏻</button>
+            <button onClick={() => {setPosts(posts.filter(p => post.id !== p.id))}}>❌</button>
             </li>
         )}
         </ul>) : (<p>no posts...</p>)}
@@ -59,7 +45,7 @@ const App = () => {
           onChange={(e) => setNewTitle(e.target.value)}
           name="new-todo-item"
           required
-          minLength={2}
+          // minlength="4"
         />
         <button type="submit" onClick={(e) =>addNewTodo(e)}>Add new todo</button>
       </form>
