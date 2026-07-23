@@ -8,19 +8,31 @@ interface Post {
 }
 const App = () => {
   const [msg, setMsg] = useState("")
-  const [newTitle, setNewTitle] = useState("")
+  // const [newTitle, setNewTitle] = useState("")
   const [posts, setPosts] = useState<Post[]>([  //tom array är typ never
   {id: 1, title: "react rocks", likes: 33}, 
   {id: 2,  title: "jsx moar rocks", likes: 27},
   {id: 3,  title: "statefull?", likes: 433},
   ])
 
-  const inputTitleRef = useRef<HTMLInputElement>(null)
+  const inputTitleRef = useRef<HTMLInputElement | null>(null)
 
   const addNewTodo = (e: React.SubmitEvent) => {
     e.preventDefault() //stop form from being submitted and causing a page reload
-    setPosts([...posts, { id: Math.max(...posts.map(p => p.id)) + 1, title: newTitle, likes: 0}])
-    setNewTitle("")
+
+    if(!inputTitleRef.current){
+      return
+    }
+
+    const postTitle = inputTitleRef.current.value 
+
+    setPosts([...posts, 
+      { id: Math.max(0, ...posts.map(p => p.id)) + 1, 
+        title: postTitle, 
+        likes: 0}
+    ])
+    // setNewTitle("")
+    inputTitleRef.current.value  = "" //you have to go inside of the object, hence doing postTitle = "" would be wrong as you would reassign an entire object but here we just point to the object as it is a complex type
   }
 
   const handleLike = (post: Post) => {
@@ -59,8 +71,8 @@ const App = () => {
           placeholder="new todo item"
           aria-label="new todo item"
           type="text"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
+          // value={newTitle}
+          // onChange={(e) => setNewTitle(e.target.value)}
           name="new-todo-item"
           required
           minLength={2}
