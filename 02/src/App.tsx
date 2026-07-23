@@ -1,4 +1,5 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
+
 
 interface Post {
     id: number;
@@ -14,8 +15,10 @@ const App = () => {
   {id: 3,  title: "statefull?", likes: 433},
   ])
 
-  const addNewTodo = (e) => {
-    e.preventDefault()
+  const inputTitleRef = useRef<HTMLInputElement>(null)
+
+  const addNewTodo = (e: React.SubmitEvent) => {
+    e.preventDefault() //stop form from being submitted and causing a page reload
     setPosts([...posts, { id: Math.max(...posts.map(p => p.id)) + 1, title: newTitle, likes: 0}])
     setNewTitle("")
   }
@@ -32,6 +35,7 @@ const App = () => {
   }
 
   console.log("...app is rendering")
+  console.log("inputTitleRef", inputTitleRef)
 
   return (
     <>
@@ -50,7 +54,7 @@ const App = () => {
 
         
 
-      <form>
+      <form  onSubmit={addNewTodo}>
         <input
           placeholder="new todo item"
           aria-label="new todo item"
@@ -60,8 +64,10 @@ const App = () => {
           name="new-todo-item"
           required
           minLength={2}
+          className="hi"
+          ref={inputTitleRef}
         />
-        <button type="submit" onClick={(e) =>addNewTodo(e)}>Add new todo</button>
+        <button type="submit">Add new todo</button>
       </form>
     </>
   )
