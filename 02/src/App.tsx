@@ -1,4 +1,5 @@
 import {useRef, useState} from "react";
+import PostCounter from "./components/PostCounter";
 
 
 interface Post {
@@ -48,7 +49,8 @@ const App = () => {
     <button onClick={()=>{setMsg(msg === "" ? "hi" : "")}}>{msg}</button>
     <div>Hello</div>
     {posts.length > 0 ?
-       (<ul>
+       (<>
+       <ul>
             {posts.map(post => 
             <li key={post.id}>
             {post.title} {post.likes} likes
@@ -56,7 +58,10 @@ const App = () => {
             <button className="btn btn-danger btn-sm ms-1" onClick={() => {removePost(post)}}>❌</button>
             </li>
         )}
-        </ul>) : (<p>no posts...</p>)}
+        </ul>
+        <PostCounter count={posts.length}/>
+        </>
+      ) : (<p>no posts...</p>)}
 
         
 
