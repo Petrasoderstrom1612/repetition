@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import Counter from './components/Counter'
 
 interface Post {
 id: number, 
@@ -14,6 +15,7 @@ function App() {
     {id: 3, title: "react is best", likes: 3000}
   ])
   const [postTitle, setPostTitle] = useState("")
+  const [counter, setCounter] = useState(posts.length)
 
   const handleLike = (postId: number) =>{
     setPosts(posts.map(p => p.id === postId ? {...p, likes: p.id + 1 } : p)) //returns ternary
@@ -22,9 +24,19 @@ function App() {
   const removeLike = (postId: number) => {
     setPosts(posts.filter(p => p.id !== postId)) //returns whatever is truthy
   }
+  const handleForm = (e: React.SubmitEvent) => { //React.SubmitEvent !!! React. must be included
+    e.preventDefault()
+    console.log(e.target.value)
+    const newPost = {id: Math.max(...posts.map(p => p.id)) + 1, title: postTitle, likes: 0} //map over posts to create a new array, but use spread ... to remove hakparenteses and after the entire Math + 1
+    setPosts([...posts, newPost])
+
+    setPostTitle("")
+    setCounter(posts.length)
+  }
 
   return (
     <>
+    <Counter count={counter}/>
   {posts.length > 0 ?
     (  <ul>
         {posts.map(post => 
@@ -37,14 +49,14 @@ function App() {
         </ul>
     ) : <p>No posts...</p>}
 
-    <form>
+    <form onSubmit={(e) => handleForm(e)}>
       <input
         aria-label="create a new post"
         minLength={2}
         value={postTitle}
         onChange={(e) => setPostTitle(e.target.value)}
       />
-      <button type="submit" className="btn btn-primary">Create a new post</button>
+      <button type="submit" className="btn btn-primary" disabled={postTitle.length < 3}>Create a new post</button>
     </form>
   </>
   )
