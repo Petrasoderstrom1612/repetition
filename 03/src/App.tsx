@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Counter from './components/Counter'
 import Clicker from './components/Clicker'
+import AddNewTodoForm from './components/AddNewTodoForm'
 
 interface Post {
 id: number, 
@@ -26,20 +27,18 @@ function App() {
   const removeLike = (postId: number) => {
     setPosts(posts.filter(p => p.id !== postId)) //returns whatever is truthy
   }
-  const handleForm = (e: React.SubmitEvent) => { //React.SubmitEvent !!! React. must be included
-    e.preventDefault()
-    console.log(e.target.value)
-    const newPost = {id: Math.max(...posts.map(p => p.id)) + 1, title: postTitle, likes: 0} //map over posts to create a new array, but use spread ... to remove hakparenteses and after the entire Math + 1
-    setPosts([...posts, newPost])
-
-    setPostTitle("")
-    setCounter(posts.length)
-  }
 
   const changeDone = (post: Post) => {
     console.log(post.id)
     post.done = !post.done 
       setPosts([...posts])
+  }
+
+  const handleStateSetters = () => {
+    setPosts([...posts, {id: Math.max(...posts.map(p => p.id)) + 1, title: postTitle, likes: 0}])
+
+    setPostTitle("")
+    setCounter(posts.length)
   }
 
   return (
@@ -64,15 +63,8 @@ function App() {
         </ul>
     ) : <p>No posts...</p>}
 
-    <form onSubmit={(e) => handleForm(e)}>
-      <input
-        aria-label="create a new post"
-        minLength={2}
-        value={postTitle}
-        onChange={(e) => setPostTitle(e.target.value)}
-      />
-      <button type="submit" className="btn btn-primary" disabled={postTitle.length < 3}>Create a new post</button>
-    </form>
+
+    <AddNewTodoForm postTitle={postTitle} handleStateSetters={handleStateSetters} setPostTitle={setPostTitle}/>
   </>
   )
 }
