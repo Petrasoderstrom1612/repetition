@@ -1,14 +1,13 @@
 import React from 'react'
 
 interface CountProps {
-    count: number
+    completed: number
+    total: number
 }
 
-const Counter: React.FC<CountProps> = ({count}: CountProps) => {
+const Counter: React.FC<CountProps> = ({completed, total}: CountProps) => {
   return (
-    <div>
-      {count}
-    </div>
+    <p> {completed} {completed === 1 ? "todo" : "todos"} of {total} completed.</p>
   )
 }
 

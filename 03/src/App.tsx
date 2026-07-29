@@ -16,7 +16,7 @@ function App() {
     {id: 3, title: "react is my fav", likes: 3000}
   ])
   const [postTitle, setPostTitle] = useState("")
-  const [counter, setCounter] = useState(posts.length)
+
 
   const handleLike = (postId: number) =>{
     setPosts(posts.map(p => p.id === postId ? {...p, likes: p.likes + 1 } : p)) //returns ternary
@@ -24,7 +24,7 @@ function App() {
 
   const removePost = (postId: number) => {
     console.log(postId)
-    setPosts(posts.filter(p => p.id !== postId)) //returns whatever is truthy
+    setPosts(posts.filter(p => p.id !== postId)) //returns whatever is truthy, keep all whose id is not matching the incoming id, the result will be a new array of filtered p's
   }
 
   const changeDone = (post: Post) => {
@@ -37,21 +37,22 @@ function App() {
     setPosts([...posts, {id: Math.max(0,...posts.map(p => p.id)) + 1, title: postTitle, likes: 0}]) //!do not forget 0 if no posts!!!! so it does not add infinity
 
     setPostTitle("")
-    setCounter(posts.length)
   }
 
-//   const doneCount = posts.reduce((count, post) => {
-//   if (post.done) {
-//     return count + 1;
-//   }
-//   return count;
-//   }, 0);
+  // const doneCount = posts.reduce((count, post) => {
+  // if (post.done) {
+  //   return count + 1;
+  // }
+  // return count;
+  // }, 0);
+
+  const doneCount = posts.filter(p => p.done).length
 
   return (
     <Container>
     <Clicker/>
     <h1>Todos</h1>
-    <Counter count={counter}/>
+    <Counter completed={posts.filter(p => p.done).length} total={posts.length}/>
     <AddNewTodoForm postTitle={postTitle} handleStateSetters={handleStateSetters} setPostTitle={setPostTitle}/>
 
   {posts.length > 0 ?
@@ -77,7 +78,7 @@ function App() {
         </ListGroup.Item>
         </>)}
         </ListGroup>
-        {<p className="text-muted"> {posts.reduce((count, post) => count + (post.done ? 1 : 0), 0)} of {posts.length} completed</p>}
+        {<p className="text-muted"> {doneCount} of {posts.length} completed</p>}
         </>
     ) : <p>No posts...</p>}
   </Container>
