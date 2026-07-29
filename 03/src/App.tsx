@@ -1,15 +1,13 @@
 import { useState } from 'react'
-import './App.css'
+import './assets/app.scss'
+import Button from 'react-bootstrap/Button'
 import Counter from './components/Counter'
 import Clicker from './components/Clicker'
 import AddNewTodoForm from './components/AddNewTodoForm'
+import Container from 'react-bootstrap/Container' //it is recommended to use this way of import with the /Component at the end - saver so Bootstrap works in all browsers
+import ListGroup from 'react-bootstrap/ListGroup'
+import type {Post} from "./types/Todo.types" // do not forget type!!! (you can also have { type X, Y Z}) if you want to group them
 
-interface Post {
-id: number, 
-title: string, 
-likes: number,
-done?: boolean
-}
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([
@@ -24,7 +22,8 @@ function App() {
     setPosts(posts.map(p => p.id === postId ? {...p, likes: p.likes + 1 } : p)) //returns ternary
   }
 
-  const removeLike = (postId: number) => {
+  const removePost = (postId: number) => {
+    console.log(postId)
     setPosts(posts.filter(p => p.id !== postId)) //returns whatever is truthy
   }
 
@@ -35,37 +34,53 @@ function App() {
   }
 
   const handleStateSetters = () => {
-    setPosts([...posts, {id: Math.max(...posts.map(p => p.id)) + 1, title: postTitle, likes: 0}])
+    setPosts([...posts, {id: Math.max(0,...posts.map(p => p.id)) + 1, title: postTitle, likes: 0}]) //!do not forget 0 if no posts!!!! so it does not add infinity
 
     setPostTitle("")
     setCounter(posts.length)
   }
 
+//   const doneCount = posts.reduce((count, post) => {
+//   if (post.done) {
+//     return count + 1;
+//   }
+//   return count;
+//   }, 0);
+
   return (
-    <>
+    <Container>
     <Clicker/>
+    <h1>Todos</h1>
     <Counter count={counter}/>
+    <AddNewTodoForm postTitle={postTitle} handleStateSetters={handleStateSetters} setPostTitle={setPostTitle}/>
+
   {posts.length > 0 ?
-    (  <ul>
+    (  
+      <>
+      <ListGroup className="todolist mb-3">
         {posts.filter(post => !post.done).map(post => 
         <>
-        <li className={post.done ? "done" : ""} onClick={() => changeDone(post)}>{post.title} {post.likes} likes</li>
-        <button className="btn btn-success" onClick={() => handleLike(post.id)}>👍🏻</button>
-        <button className="btn btn-danger" onClick={() => removeLike(post.id)}>❌</button>
+        <ListGroup.Item key={post.id} className={`${post.done ? "completed" : ""} mb-3`} onClick={() => changeDone(post)}><span className="todo-title">{post.title} {post.likes} likes</span>
+        <div>
+          <Button size="sm" variant="outline-warning" onClick={(e) => {e.stopPropagation(); handleLike(post.id)}}>👍🏻</Button>
+          <Button size="sm" variant="outline-danger" onClick={(e) => {e.stopPropagation(); removePost(post.id)}}>❌</Button>
+        </div>
+        </ListGroup.Item>
         </> )}
         <hr/>
         {posts.filter(post => post.done).map(post => <>
-        <li key={post.id} className={post.done ? "done" : ""} onClick={() => changeDone(post)}>{post.title} {post.likes} likes</li>
-        <button className="btn btn-success" onClick={() => handleLike(post.id)}>👍🏻</button>
-        <button className="btn btn-danger" onClick={() => removeLike(post.id)}>❌</button>
+        <ListGroup.Item key={post.id} className={post.done ? "completed" : ""} onClick={() => changeDone(post)}><span className="todo-title">{post.title} {post.likes} likes</span>
+        <div>
+          <Button size="sm" variant="outline-warning" onClick={(e) => {e.stopPropagation(); handleLike(post.id)}}>👍🏻</Button>
+          <Button size="sm" variant="outline-danger" onClick={(e) => {e.stopPropagation(); removePost(post.id)}}>❌</Button>
+        </div>
+        </ListGroup.Item>
         </>)}
-        
-        </ul>
+        </ListGroup>
+        {<p className="text-muted"> {posts.reduce((count, post) => count + (post.done ? 1 : 0), 0)} of {posts.length} completed</p>}
+        </>
     ) : <p>No posts...</p>}
-
-
-    <AddNewTodoForm postTitle={postTitle} handleStateSetters={handleStateSetters} setPostTitle={setPostTitle}/>
-  </>
+  </Container>
   )
 }
 
