@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import './assets/app.scss'
-import Button from 'react-bootstrap/Button'
 import Counter from './components/Counter'
 import Clicker from './components/Clicker'
 import AddNewTodoForm from './components/AddNewTodoForm'
 import Container from 'react-bootstrap/Container' //it is recommended to use this way of import with the /Component at the end - saver so Bootstrap works in all browsers
-import ListGroup from 'react-bootstrap/ListGroup'
 import type {Post} from "./types/Todo.types" // do not forget type!!! (you can also have { type X, Y Z}) if you want to group them
-
+import TodosList from "./components/TodosList"
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([
@@ -16,6 +14,13 @@ function App() {
     {id: 3, title: "react is my fav", likes: 3000}
   ])
   const [postTitle, setPostTitle] = useState("")
+  
+  const doneCount = posts.filter(p => p.done).length
+  const incompletedPosts = posts.filter(post => !post.done)
+  const completedPosts = posts.filter(post => post.done)
+  
+  const doneStuff="Done stuff"
+  const todoStuff="To do stuff"
 
 
   const handleLike = (postId: number) =>{
@@ -34,7 +39,7 @@ function App() {
   }
 
   const handleStateSetters = () => {
-    setPosts([...posts, {id: Math.max(0,...posts.map(p => p.id)) + 1, title: postTitle, likes: 0}]) //!do not forget 0 if no posts!!!! so it does not add infinity
+    setPosts([...posts, {id: Math.max(0,...posts.map(p => p.id)) + 1, title: postTitle.trim(), likes: 0}]) //!do not forget 0 if no posts!!!! so it does not add infinity
 
     setPostTitle("")
   }
@@ -46,7 +51,6 @@ function App() {
   // return count;
   // }, 0);
 
-  const doneCount = posts.filter(p => p.done).length
 
   return (
     <Container>
@@ -54,33 +58,16 @@ function App() {
     <h1>Todos</h1>
     <Counter completed={posts.filter(p => p.done).length} total={posts.length}/>
     <AddNewTodoForm postTitle={postTitle} handleStateSetters={handleStateSetters} setPostTitle={setPostTitle}/>
-
+  <>
   {posts.length > 0 ?
-    (  
-      <>
-      <ListGroup className="todolist mb-3">
-        {posts.filter(post => !post.done).map(post => 
-        <>
-        <ListGroup.Item key={post.id} className={`${post.done ? "completed" : ""} mb-3`} onClick={() => changeDone(post)}><span className="todo-title">{post.title} {post.likes} likes</span>
-        <div>
-          <Button size="sm" variant="outline-warning" onClick={(e) => {e.stopPropagation(); handleLike(post.id)}}>👍🏻</Button>
-          <Button size="sm" variant="outline-danger" onClick={(e) => {e.stopPropagation(); removePost(post.id)}}>❌</Button>
-        </div>
-        </ListGroup.Item>
-        </> )}
+    (  <>
+       <TodosList handleLike={handleLike} removePost={removePost} changeDone={changeDone} filteredPosts={incompletedPosts} headline={todoStuff}/>
         <hr/>
-        {posts.filter(post => post.done).map(post => <>
-        <ListGroup.Item key={post.id} className={post.done ? "completed" : ""} onClick={() => changeDone(post)}><span className="todo-title">{post.title} {post.likes} likes</span>
-        <div>
-          <Button size="sm" variant="outline-warning" onClick={(e) => {e.stopPropagation(); handleLike(post.id)}}>👍🏻</Button>
-          <Button size="sm" variant="outline-danger" onClick={(e) => {e.stopPropagation(); removePost(post.id)}}>❌</Button>
-        </div>
-        </ListGroup.Item>
-        </>)}
-        </ListGroup>
-        {<p className="text-muted"> {doneCount} of {posts.length} completed</p>}
+        <TodosList handleLike={handleLike} removePost={removePost} changeDone={changeDone} filteredPosts={completedPosts} headline={doneStuff}/>
+        <p className="text-muted"> {doneCount} of {posts.length} completed</p>
         </>
     ) : <p>No posts...</p>}
+  </>
   </Container>
   )
 }
