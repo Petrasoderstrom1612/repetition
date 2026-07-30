@@ -9,7 +9,7 @@ interface AddNewTodoFormProps {
     setPostTitle: React.Dispatch<React.SetStateAction<string>>
 }
 
-const AddNewTodoForm: React.FC<AddNewTodoFormProps> = ({postTitle, handleStateSetters, setPostTitle}: AddNewTodoFormProps) => {
+const AddNewTodoForm: React.FC<AddNewTodoFormProps> = ({postTitle, handleStateSetters, setPostTitle}) => {
 const trimmedPostTitle = postTitle.trim()
 const postTitleLength = postTitle.length
 
