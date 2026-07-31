@@ -1,22 +1,25 @@
 import React from 'react'
+import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 
+
 interface AddNewTodoFormProps {
-    postTitle: string;
-    handleStateSetters: () => void
-    setPostTitle: React.Dispatch<React.SetStateAction<string>>
+    handleStateSetters: (title: string) => void;
 }
 
-const AddNewTodoForm: React.FC<AddNewTodoFormProps> = ({postTitle, handleStateSetters, setPostTitle}) => {
+const AddNewTodoForm: React.FC<AddNewTodoFormProps> = ({handleStateSetters}) => {
+const [postTitle, setPostTitle] = useState("")
 const trimmedPostTitle = postTitle.trim()
 const postTitleLength = postTitle.length
 
   const handleForm = (e: React.SubmitEvent) => { //React.SubmitEvent !!! React. must be included
     e.preventDefault()
     console.log(e.target.value)
-    handleStateSetters()
+    // setPosts([...posts, {id: Math.max(0,...posts.map(p => p.id)) + 1, likes: 0}]) 
+    handleStateSetters(postTitle) 
+    setPostTitle("")
   }
 
   return (

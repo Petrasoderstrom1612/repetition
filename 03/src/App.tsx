@@ -14,7 +14,7 @@ function App() {
     {id: 2, title: "programming is cool", likes: 200},
     {id: 3, title: "react is my fav", likes: 3000}
   ])
-  const [postTitle, setPostTitle] = useState("")
+
   
   const doneCount = posts.filter(p => p.done).length
   const incompletedPosts = posts.filter(post => !post.done)
@@ -35,10 +35,8 @@ function App() {
       setPosts([...posts])
   }
 
-  const handleStateSetters = () => {
-    setPosts([...posts, {id: Math.max(0,...posts.map(p => p.id)) + 1, title: postTitle.trim(), likes: 0}]) //!do not forget 0 if no posts!!!! so it does not add infinity
-
-    setPostTitle("")
+  const handleStateSetters = (title: string) => {
+    setPosts([...posts, {id: Math.max(0,...posts.map(p => p.id)) + 1, title: title, likes: 0}]) //!do not forget 0 if no posts!!!! so it does not add infinity
   }
 
   return (
@@ -46,7 +44,7 @@ function App() {
     <Clicker/>
     <h1>Todos</h1>
     <Counter completed={posts.filter(p => p.done).length} total={posts.length}/>
-    <AddNewTodoForm postTitle={postTitle} handleStateSetters={handleStateSetters} setPostTitle={setPostTitle}/>
+    <AddNewTodoForm  handleStateSetters={handleStateSetters}/>
   <>
   {posts.length > 0 ?
     (  <>
