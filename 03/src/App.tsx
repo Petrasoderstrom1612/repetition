@@ -50,12 +50,8 @@ function App() {
         <TodosList handleLike={handleLike} removePost={removePost} changeDone={changeDone} posts={incompletedPosts}/>
         <hr/>
         <h2 className="h5 mb-2">"To do stuff"</h2>
-        <ListGroup className="todolist mb-3">
-           {completedPosts.map(post => 
-        <TodosListItem handleLike={handleLike} removePost={removePost} changeDone={changeDone} post={post}/>
-      )}
+        <TodosList handleLike={handleLike} removePost={removePost} changeDone={changeDone} posts={completedPosts}/>
         <p className="text-muted"> {doneCount} of {posts.length} completed</p>
-        </ListGroup>
         </>
     ) : <p>No posts...</p>}
   </>

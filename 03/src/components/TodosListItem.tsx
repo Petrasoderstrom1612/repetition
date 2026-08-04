@@ -10,15 +10,15 @@ type TodosListItemProps = {
 }
 
 const TodosListItem: React.FC<TodosListItemProps> = ({handleLike, removePost, changeDone, post}) => {
-  return (
-    <>
-    <ListGroup.Item key={post.id} className={`${post.done ? "completed" : ""} mb-3`} onClick={() => changeDone(post)}><span className="todo-title">{post.title} {post.likes} likes</span>
-    <div>
-        <Button size="sm" variant="outline-warning" onClick={(e) => {e.stopPropagation(); handleLike(post.id)}}>👍🏻</Button>
-        <Button size="sm" variant="outline-danger" onClick={(e) => {e.stopPropagation(); removePost(post.id)}}>❌</Button>
-    </div>
-    </ListGroup.Item>
-    </>
+return (
+  <>
+  <ListGroup.Item key={post.id} className={`${post.done ? "completed" : ""} mb-3`} onClick={() => changeDone(post)}><span className="todo-title">{post.title} {post.likes} likes</span>
+  <div>
+      <Button size="sm" variant="outline-warning" onClick={(e) => {e.stopPropagation(); handleLike(post.id)}}>👍🏻</Button>
+      <Button size="sm" variant="outline-danger" onClick={(e) => {e.stopPropagation(); removePost(post.id)}}>❌</Button>
+  </div>
+  </ListGroup.Item>
+  </>
   )
 }
 
