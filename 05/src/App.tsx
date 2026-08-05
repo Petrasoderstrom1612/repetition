@@ -4,17 +4,12 @@ import Counter from './components/Counter'
 import Clicker from './components/Clicker'
 import AddNewTodoForm from './components/AddNewTodoForm'
 import Container from 'react-bootstrap/Container' //it is recommended to use this way of import with the /Component at the end - saver so Bootstrap works in all browsers
-import ListGroup from 'react-bootstrap/ListGroup'
 import type {Post} from "./types/Todo.types" // do not forget type!!! (you can also have { type X, Y Z}) if you want to group them
-import TodosListItem from "./components/TodosListItem"
 import TodosList from './components/TodosList'
+import data from "./db.json"
 
 function App() {
-  const [posts, setPosts] = useState<Post[]>([
-    {id: 1, title: "react is best", likes: 26, done: true},
-    {id: 2, title: "programming is cool", likes: 200},
-    {id: 3, title: "react is my fav", likes: 3000}
-  ])
+  const [posts, setPosts] = useState<Post[]>(data.todos)
 
   
   const doneCount = posts.filter(p => p.done).length

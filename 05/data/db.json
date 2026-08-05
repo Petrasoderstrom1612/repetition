@@ -1,0 +1,7 @@
+{
+    "todos": [
+        {"id": 1, "title": "react is best", "likes": 26, "done": true},
+        {"id": 2, "title": "programming is cool", "likes": 200},
+        {"id": 3, "title": "react is my fav", "likes": 3000}
+    ]
+}
