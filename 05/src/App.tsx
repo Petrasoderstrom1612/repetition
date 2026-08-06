@@ -1,4 +1,5 @@
-import { useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react'
 import './assets/app.scss'
 import Counter from './components/Counter'
 import Clicker from './components/Clicker'
@@ -6,12 +7,39 @@ import AddNewTodoForm from './components/AddNewTodoForm'
 import Container from 'react-bootstrap/Container' //it is recommended to use this way of import with the /Component at the end - saver so Bootstrap works in all browsers
 import type {Post} from "./types/Todo.types" // do not forget type!!! (you can also have { type X, Y Z}) if you want to group them
 import TodosList from './components/TodosList'
-import data from "./db.json"
 
 function App() {
-  const [posts, setPosts] = useState<Post[]>(data.todos)
+  const [posts, setPosts] = useState<Post[]>([]) 
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string|false>(false)
 
-  
+  useEffect(() => {
+    const getData = async () => {
+      try{
+        setIsLoading(true)
+        const res = await fetch("http://localhost:3000/todos")
+        if(!res.ok){
+          throw new Error("Request failed")
+        }
+        const data = await res.json() as Post[]
+        setPosts(data)
+        setError("err")
+      } catch (err) {
+        if (err instanceof Error){
+          setError(err.message)
+        } else {
+          setError("something unexpected has happend")
+        }
+      }
+      // } finally {
+      //   setIsLoading(false)
+      // }
+
+    }
+
+    getData()
+  },[])
+
   const doneCount = posts.filter(p => p.done).length
   
   const handleLike = (postId: number) =>{
@@ -39,7 +67,9 @@ function App() {
   return (
     <Container>
   <>
-  {posts.length > 0 ?
+  {error ? (<p>{error}</p>) :
+  isLoading ? (<p>loading...</p>) :
+  posts.length > 0 ?
     (  <>
         <h2 className="h5 mb-2">"Done stuff"</h2>
         <TodosList handleLike={handleLike} removePost={removePost} changeDone={changeDone} posts={incompletedPosts}/>
@@ -48,7 +78,7 @@ function App() {
         <TodosList handleLike={handleLike} removePost={removePost} changeDone={changeDone} posts={completedPosts}/>
         <p className="text-muted"> {doneCount} of {posts.length} completed</p>
         </>
-    ) : <p>No posts...</p>}
+    ) : (<p>No posts...</p>)}
   </>
     <Clicker/>
     <h1>Todos</h1>
