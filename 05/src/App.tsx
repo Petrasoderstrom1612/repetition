@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { getTodosAxios } from './services/TodosAPI'
 import { useEffect, useState } from 'react'
 import './assets/app.scss'
 import Counter from './components/Counter'
@@ -26,12 +27,8 @@ function App() {
     const getData = async () => {
       try{
         setIsLoading(true)
-        const res = await fetch("http://localhost:3000/todos")
-        if(!res.ok){
-          throw new Error("Request failed")
-        }
-        const data = await res.json() as Post[]
-        setPosts(data)
+        const dataFromService = await getTodosAxios() 
+        setPosts(dataFromService)
       } catch (err) {
         if (err instanceof Error){
           setError(err.message)
