@@ -17,7 +17,7 @@ const postTitleLength = postTitle.length
   const handleForm = (e: React.SubmitEvent) => { //React.SubmitEvent !!! React. must be included
     e.preventDefault()
     console.log(e.target.value)
-    // setPosts([...posts, {id: Math.max(0,...posts.map(p => p.id)) + 1, likes: 0}]) 
+
     postData(postTitle) 
     setPostTitle("")
   }
