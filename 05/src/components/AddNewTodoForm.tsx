@@ -6,10 +6,10 @@ import InputGroup from 'react-bootstrap/InputGroup'
 
 
 interface AddNewTodoFormProps {
-    addPostSetter: (title: string) => void;
+  postData: (title: string) => Promise<void>;
 }
 
-const AddNewTodoForm: React.FC<AddNewTodoFormProps> = ({addPostSetter}) => {
+const AddNewTodoForm: React.FC<AddNewTodoFormProps> = ({postData}) => {
 const [postTitle, setPostTitle] = useState("")
 const trimmedPostTitle = postTitle.trim()
 const postTitleLength = postTitle.length
@@ -18,7 +18,7 @@ const postTitleLength = postTitle.length
     e.preventDefault()
     console.log(e.target.value)
     // setPosts([...posts, {id: Math.max(0,...posts.map(p => p.id)) + 1, likes: 0}]) 
-    addPostSetter(postTitle) 
+    postData(postTitle) 
     setPostTitle("")
   }
 

@@ -1,4 +1,4 @@
-import type {Post} from "../types/Todo.types" 
+import type {CreateTodoPayload, Post} from "../types/Todo.types" 
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3000"
@@ -18,3 +18,9 @@ export const getTodosAxios = async () => {
 }
 
 console.log("getTodosAxios", getTodosAxios())
+
+export const createTodoAxios = async(payload: CreateTodoPayload) => {
+      console.log("POST payload:", payload)
+    const res = await axios.post<Post>(BASE_URL + "/todos",payload)
+    return res.data
+}
