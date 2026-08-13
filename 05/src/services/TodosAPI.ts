@@ -24,3 +24,8 @@ export const createTodoAxios = async(payload: CreateTodoPayload) => {
     const res = await axios.post<Post>(BASE_URL + "/todos",payload)
     return res.data
 }
+
+export const deleteTodoAxios = async(id: number) => {
+    const res = await axios.delete<Post>(BASE_URL + "/todos/" + id)
+    return res.data
+}

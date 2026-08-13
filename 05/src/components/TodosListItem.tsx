@@ -4,7 +4,7 @@ import type {Post} from "../types/Todo.types"
 
 type TodosListItemProps = {
     handleLike: (postId: number) => void;
-    removePost: (postId: number) => void;
+    removePost: (postId: number) => Promise<void>;
     changeDone: (post: Post) => void;
     post: Post
 }

@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createTodoAxios, getTodosAxios } from './services/TodosAPI'
+import { createTodoAxios, deleteTodoAxios, getTodosAxios } from './services/TodosAPI'
 import { useEffect, useState } from 'react'
 import './assets/app.scss'
 import Counter from './components/Counter'
@@ -24,11 +25,8 @@ function App() {
   const incompletedPosts = posts?.filter(post => !post.done) ?? [];
   const completedPosts = posts?.filter(post => post.done) ?? [];
   const doneCount = posts?.filter(p => p.done).length ?? [];
-
-
  
-  useEffect(() => {
-    const getData = async () => {
+  const getData = async () => {
     try{
       setIsLoading(true)
       const dataFromService = await getTodosAxios() 
@@ -43,6 +41,8 @@ function App() {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
      getData()
   },[])
   
@@ -62,15 +62,29 @@ function App() {
       }
     } 
   }
+
+  const deletePost = async (postId: number) => {
+    try{
+      await deleteTodoAxios(postId)
+      getData()
+    } catch(err) {
+      if (err instanceof Error){
+        setError("could not delete the item" + err.message)
+      } else{
+        setError("something unexpected has happend")
+      }
+    }
+  }
   
+  // const removePost = (postId: number) => {
+  //   console.log(postId)
+  //   setPosts(posts && posts.filter(p => p.id !== postId)) //returns whatever is truthy, keep all whose id is not matching the incoming id, the result will be a new array of filtered p's
+  // }
+
   const handleLike = (postId: number) =>{
     setPosts(posts ?posts.map(p => p.id === postId ? {...p, likes: p.likes + 1 } : p): []) //returns ternary
   }
   
-  const removePost = (postId: number) => {
-    console.log(postId)
-    setPosts(posts && posts.filter(p => p.id !== postId)) //returns whatever is truthy, keep all whose id is not matching the incoming id, the result will be a new array of filtered p's
-  }
   
   const changeDone = (post: Post) => {
     console.log(post.id)
@@ -98,10 +112,10 @@ function App() {
     posts && posts.length ?
       (  <>
           <h2 className="h5 mb-2">"Done stuff"</h2>
-          <TodosList handleLike={handleLike} removePost={removePost} changeDone={changeDone} posts={incompletedPosts}/>
+          <TodosList handleLike={handleLike} removePost={deletePost} changeDone={changeDone} posts={incompletedPosts}/>
           <hr/>
           <h2 className="h5 mb-2">"To do stuff"</h2>
-          <TodosList handleLike={handleLike} removePost={removePost} changeDone={changeDone} posts={completedPosts}/>
+          <TodosList handleLike={handleLike} removePost={deletePost} changeDone={changeDone} posts={completedPosts}/>
           <p className="text-muted"> {doneCount} of {posts.length} completed</p>
           </>
       ) : (<p>No posts...</p>)}
