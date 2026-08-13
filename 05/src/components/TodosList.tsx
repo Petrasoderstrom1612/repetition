@@ -3,7 +3,7 @@ import TodosListItem from "../components/TodosListItem"
 import type {Post} from "../types/Todo.types"
 
 interface TodosListProps {
-    handleLike: (postId: number) => void;
+    handleLike: (postId: number, likes: number) => Promise<void>;
     removePost: (postId: number) => Promise<void>;
     changeDone: (post: Post) => void;
     posts: Post[]

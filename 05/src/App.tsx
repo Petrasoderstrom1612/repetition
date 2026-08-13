@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createTodoAxios, deleteTodoAxios, getTodosAxios } from './services/TodosAPI'
+import { createTodoAxios, deleteTodoAxios, getTodosAxios, likeTodoAxios } from './services/TodosAPI'
 import { useEffect, useState } from 'react'
 import './assets/app.scss'
 import Counter from './components/Counter'
@@ -63,6 +63,18 @@ function App() {
     } 
   }
 
+    
+  // const addPostSetter = (title: string) => {
+  //   // const newPost = await createTodoAxios({
+  //   //   // id: Axios generates the right number automatically
+  //   //   title: title, 
+  //   //   likes: 0
+  //   // }) //!do not forget 0 if no posts!!!! so it does not add infinity
+
+  //   // setPosts([...posts!, newPost])
+  //   return title
+  // }
+
   const deletePost = async (postId: number) => {
     try{
       await deleteTodoAxios(postId)
@@ -81,27 +93,30 @@ function App() {
   //   setPosts(posts && posts.filter(p => p.id !== postId)) //returns whatever is truthy, keep all whose id is not matching the incoming id, the result will be a new array of filtered p's
   // }
 
-  const handleLike = (postId: number) =>{
-    setPosts(posts ?posts.map(p => p.id === postId ? {...p, likes: p.likes + 1 } : p): []) //returns ternary
+  
+  const addLike = async (postId: number, likes: number) => {
+    try{
+      await likeTodoAxios(postId, likes)
+      getData()
+    } catch (err){
+      if (err instanceof Error){
+        setError("could not add like" + err.message)
+      } else {
+        setError("something unexpected happened")
+      }
+    }
   }
   
-  
+  // const handleLike = (postId: number) =>{
+  //   setPosts(posts ?posts.map(p => p.id === postId ? {...p, likes: p.likes + 1 } : p): []) //returns ternary
+  // }
+
   const changeDone = (post: Post) => {
     console.log(post.id)
     post.done = !post.done 
     setPosts([...posts!])
   }
-  
-  // const addPostSetter = (title: string) => {
-  //   // const newPost = await createTodoAxios({
-  //   //   // id: Axios generates the right number automatically
-  //   //   title: title, 
-  //   //   likes: 0
-  //   // }) //!do not forget 0 if no posts!!!! so it does not add infinity
 
-  //   // setPosts([...posts!, newPost])
-  //   return title
-  // }
 
 
   return (
@@ -112,10 +127,10 @@ function App() {
     posts && posts.length ?
       (  <>
           <h2 className="h5 mb-2">"Done stuff"</h2>
-          <TodosList handleLike={handleLike} removePost={deletePost} changeDone={changeDone} posts={incompletedPosts}/>
+          <TodosList handleLike={addLike} removePost={deletePost} changeDone={changeDone} posts={incompletedPosts}/>
           <hr/>
           <h2 className="h5 mb-2">"To do stuff"</h2>
-          <TodosList handleLike={handleLike} removePost={deletePost} changeDone={changeDone} posts={completedPosts}/>
+          <TodosList handleLike={addLike} removePost={deletePost} changeDone={changeDone} posts={completedPosts}/>
           <p className="text-muted"> {doneCount} of {posts.length} completed</p>
           </>
       ) : (<p>No posts...</p>)}

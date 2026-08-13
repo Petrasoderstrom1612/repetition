@@ -29,3 +29,8 @@ export const deleteTodoAxios = async(id: number) => {
     const res = await axios.delete<Post>(BASE_URL + "/todos/" + id)
     return res.data
 }
+
+export const likeTodoAxios = async(id: number, likes: number) => {
+    const res = await axios.patch<Post>(BASE_URL + "/todos/" + id, {likes: likes + 1})
+    return res.data
+}
