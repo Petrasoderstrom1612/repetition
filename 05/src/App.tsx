@@ -25,24 +25,25 @@ function App() {
   const completedPosts = posts?.filter(post => post.done) ?? [];
   const doneCount = posts?.filter(p => p.done).length ?? [];
 
+
+ 
   useEffect(() => {
     const getData = async () => {
-      try{
-        setIsLoading(true)
-        const dataFromService = await getTodosAxios() 
-        setPosts(dataFromService)
-      } catch (err) {
-        if (err instanceof Error){
-          setError(err.message)
-        } else {
-          setError("something unexpected has happend")
-        }
-      } finally {
-        setIsLoading(false)
+    try{
+      setIsLoading(true)
+      const dataFromService = await getTodosAxios() 
+      setPosts(dataFromService) //to set Posts again
+    } catch (err) {
+      if (err instanceof Error){
+        setError(err.message)
+      } else {
+        setError("something unexpected has happend")
       }
+    } finally {
+      setIsLoading(false)
     }
-    getData()
-
+  }
+     getData()
   },[])
   
     useEffect(()=>{   
@@ -51,8 +52,8 @@ function App() {
 
   const postData = async (title: string) => { //you need async because you call the service
     try{
-      const newPost = await createTodoAxios({title: title, likes: 0}) 
-      setPosts(prevPosts =>[...prevPosts!, newPost])
+      await createTodoAxios({title: title, likes: 0}) 
+      getData()
     } catch (err) {
       if (err instanceof Error){
         setError("Could not create todo" + err.message)
