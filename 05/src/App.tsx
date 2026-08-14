@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createTodoAxios, deleteTodoAxios, getTodosAxios, likeTodoAxios } from './services/TodosAPI'
+import { createTodoAxios, completeToggleTodoAxios, deleteTodoAxios, getTodosAxios, likeTodoAxios } from './services/TodosAPI'
 import { useEffect, useState } from 'react'
 import './assets/app.scss'
 import Counter from './components/Counter'
@@ -52,7 +52,7 @@ function App() {
 
   const postData = async (title: string) => { //you need async because you call the service
     try{
-      await createTodoAxios({title: title, likes: 0}) 
+      await createTodoAxios({title: title, likes: 0, done: false}) 
       getData()
     } catch (err) {
       if (err instanceof Error){
@@ -111,13 +111,24 @@ function App() {
   //   setPosts(posts ?posts.map(p => p.id === postId ? {...p, likes: p.likes + 1 } : p): []) //returns ternary
   // }
 
-  const changeDone = (post: Post) => {
-    console.log(post.id)
-    post.done = !post.done 
-    setPosts([...posts!])
+  // const changeDone = (post: Post) => {
+  //   console.log(post.id)
+  //   post.done = !post.done 
+  //   setPosts([...posts!])
+  // }
+
+  const toggleDone = async(postId:number, done: boolean) => {
+    try{
+      await completeToggleTodoAxios(postId, done)
+      getData()
+    } catch (err){
+      if (err instanceof Error){
+        setError("could not add like" + err.message)
+      } else{
+        setError("something unexpected happened")
+      }
+    }
   }
-
-
 
   return (
   <Container>
@@ -127,10 +138,10 @@ function App() {
     posts && posts.length ?
       (  <>
           <h2 className="h5 mb-2">"Done stuff"</h2>
-          <TodosList handleLike={addLike} removePost={deletePost} changeDone={changeDone} posts={incompletedPosts}/>
+          <TodosList handleLike={addLike} removePost={deletePost} changeDone={toggleDone} posts={incompletedPosts}/>
           <hr/>
           <h2 className="h5 mb-2">"To do stuff"</h2>
-          <TodosList handleLike={addLike} removePost={deletePost} changeDone={changeDone} posts={completedPosts}/>
+          <TodosList handleLike={addLike} removePost={deletePost} changeDone={toggleDone} posts={completedPosts}/>
           <p className="text-muted"> {doneCount} of {posts.length} completed</p>
           </>
       ) : (<p>No posts...</p>)}

@@ -34,3 +34,8 @@ export const likeTodoAxios = async(id: number, likes: number) => {
     const res = await axios.patch<Post>(BASE_URL + "/todos/" + id, {likes: likes + 1})
     return res.data
 }
+
+export const completeToggleTodoAxios = async(id:number, done: boolean) => {
+    const rest = await axios.patch<Post>(BASE_URL + "/todos/" + id, {done: !done}) 
+    return rest.data
+}
