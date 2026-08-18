@@ -25,6 +25,7 @@ function App() {
   const incompletedPosts = posts?.filter(post => !post.done) ?? [];
   const completedPosts = posts?.filter(post => post.done) ?? [];
   const doneCount = posts?.filter(p => p.done).length ?? [];
+
  
   const getData = async () => {
     try{
