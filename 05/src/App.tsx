@@ -97,7 +97,7 @@ function App() {
   const addLike = async (postId: number, likes: number) => {
     try{
       await likeTodoAxios(postId, likes)
-      getData()
+      await getData() //so that it waits on likeTodoAxios PATCH
     } catch (err){
       if (err instanceof Error){
         setError("could not add like" + err.message)
@@ -119,7 +119,7 @@ function App() {
 
   const toggleDone = async(postId:number, done: boolean) => {
     try{
-      await completeToggleTodoAxios(postId, done)
+      await completeToggleTodoAxios(postId, {done:!done})
       getData()
     } catch (err){
       if (err instanceof Error){
