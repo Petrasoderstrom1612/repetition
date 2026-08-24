@@ -1,4 +1,4 @@
-import './assets/App.scss'
+import './assets/scss/App.scss'
 import CurrentWeather from './components/CurrentWeather'
 import SearchCity from './components/SearchCity'
 
