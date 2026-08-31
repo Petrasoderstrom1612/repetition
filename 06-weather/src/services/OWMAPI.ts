@@ -27,7 +27,7 @@ export const getCurrentWeather = async (city: string) => {
     if (FAKE_SLOW_API) {
         await new Promise((r) => setTimeout(r, FAKE_SLOW_API_DELAY))
     }
-    console.log(city)
+    // console.log(city)
 
     return res.data;
 }

@@ -31,11 +31,12 @@ function App() {
   },[])
 
   console.log(currentWeather)
+  console.log(isLoading, error)
 
   return (
       <section id="app">
         <SearchCity/>
-        <Forecast/>
+        <Forecast currentWeather={currentWeather}/>
       </section>
   )
 }
