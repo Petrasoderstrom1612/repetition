@@ -1,4 +1,5 @@
 import './assets/scss/App.scss'
+// import { useState } from 'react'
 import { useState, useEffect } from 'react'
 import {getCurrentWeather} from "./services/OWMAPI"
 import Forecast from './components/Forecast'
@@ -11,23 +12,25 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string|false>(false)
 
-  useEffect(()=>{
-    const getData = async () => {
-      try{
-        setIsLoading(true)
-        const data = await getCurrentWeather("Stockholm")
-        setCurrentWeather(data)
-      } catch (err){
-        if (err instanceof Error){
-          setError(err.message)
-        } else {
-          setError("something unexpected happened")
-        }
-      } finally {
-        setIsLoading(false)
+  const getData = async (city: string) => {
+    try{
+      setIsLoading(true)
+      const data = await getCurrentWeather(city)
+      setCurrentWeather(data)
+    } catch (err){
+      if (err instanceof Error){
+        setError(err.message)
+      } else {
+        setError("something unexpected happened")
       }
+    } finally {
+      setIsLoading(false)
     }
-    getData()
+  }
+
+  useEffect(()=>{
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    getData("Stockholm")
   },[])
 
   console.log(currentWeather)
@@ -35,7 +38,7 @@ function App() {
 
   return (
       <section id="app">
-        <SearchCity/>
+        <SearchCity getData={getData}/>
         <Forecast currentWeather={currentWeather}/>
       </section>
   )
