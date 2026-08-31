@@ -2,8 +2,11 @@ import { Card } from 'react-bootstrap';
 import weather from "../assets/weather.jpg"
 import type { CurrentWeather } from '../services/OWMAPI.types'
 
+interface ForecastProps {
+    currentWeather: CurrentWeather | null
+}
 
-const Forecast: React.FC<CurrentWeather> = ({currentWeather}) => {
+const Forecast: React.FC<ForecastProps> = ({currentWeather}) => {
 console.log("CUR",currentWeather)
     return (
         <div id="current weather">
