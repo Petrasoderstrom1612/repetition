@@ -1,7 +1,7 @@
 import { Card } from 'react-bootstrap';
 import weather from "../assets/weather.jpg"
 
-const CurrentWeather = () => {
+const Forecast = () => {
     return (
         <div id="current weather">
             <Card>
@@ -25,4 +25,4 @@ const CurrentWeather = () => {
     )
 }
 
-export default CurrentWeather;
+export default Forecast;

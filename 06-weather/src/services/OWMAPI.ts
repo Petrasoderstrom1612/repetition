@@ -1,4 +1,5 @@
 import axios from "axios";
+import type {CurrentWeather} from "./OWMAPI.types"
 
 // const BASE_URL = "https://api.openweathermap.org/data/2.5";
 //https://api.openweathermap.org/data/2.5/weather?q={london}&appid={93b8dc43f170a358bd8821511c0edff5}
@@ -14,7 +15,7 @@ const BASE_URL = "https://api.openweathermap.org/data/2.5"
 */
 
 export const getCurrentWeather = async (city: string) => {
-    const res = await axios.get(BASE_URL + "/weather",
+    const res = await axios.get<CurrentWeather>(BASE_URL + "/weather",
         { params: {
             q: city,
             units: "metric",
