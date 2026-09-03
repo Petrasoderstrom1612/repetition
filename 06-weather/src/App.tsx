@@ -7,6 +7,7 @@ import Forecast from './components/Forecast'
 import type { CurrentWeather } from './services/OWMAPI.types'
 import SearchCity from './components/SearchCity'
 import "./services/OWMAPI"
+import Loader from './components/Loader'
 
 function App() {
   const [currentWeather, setCurrentWeather] = useState<CurrentWeather|null>(null)
@@ -58,7 +59,7 @@ function App() {
         <Button onClick={selectUnits}>{units === "metric" ? "°C" : "F"}</Button>
         <hr/>
         <SearchCity onSearch={handleSearch} units={units}/>
-        {isLoading && <p>loading</p>}
+        {isLoading && <Loader/>}
         {error && <Alert>The city you've been searching for does not exist. controll your spelling</Alert>}
         {!error && !isLoading && currentWeather && <Forecast currentWeather={currentWeather} units={units}/>}
       </section>

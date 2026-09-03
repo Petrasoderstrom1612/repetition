@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable react-hooks/exhaustive-deps */
 import { createTodoAxios, completeToggleTodoAxios, deleteTodoAxios, getTodosAxios, likeTodoAxios } from './services/TodosAPI'
 import { useEffect, useState } from 'react'
 import './assets/app.scss'
