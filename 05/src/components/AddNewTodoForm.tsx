@@ -48,7 +48,7 @@ const handleForm = (e: React.SubmitEvent) => { //React.SubmitEvent !!! React. mu
             onChange={(e) => setPostTitle(e.target.value)}
             ref={inputRef}
             required
-            isInvalid= {postTitleLength < 3 && postTitleLength > 0}
+            isInvalid={postTitleLength < 3 && postTitleLength > 0}
         />
         <Button variant="success" type="submit" className="btn btn-primary" disabled={trimmedPostTitle.length < 3}>Create a new post</Button>
       </InputGroup>

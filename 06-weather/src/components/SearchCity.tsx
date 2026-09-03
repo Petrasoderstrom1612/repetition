@@ -2,17 +2,19 @@ import { Button, Form } from 'react-bootstrap';
 import { useState} from 'react'
 
 interface SearchCityProps {
-  getData: (city: string) => Promise<void>
+  onSearch: (city: string, units: string) => void;
+  units: string;
 }
 
-const SearchCity: React.FC<SearchCityProps> = ({getData}) => {
+const SearchCity: React.FC<SearchCityProps> = ({onSearch, units}) => {
   const [input, setInput] = useState("")
+  const trimmedInput = input.trim()
 
- console.log(input)
+ console.log(input.length)
 
  const handleForm = (e: React.SubmitEvent) => {
   e.preventDefault()
-  getData(input)
+  onSearch(trimmedInput, units)
   setInput("")  
  }
 
@@ -25,14 +27,15 @@ const SearchCity: React.FC<SearchCityProps> = ({getData}) => {
             type="text" 
             value={input} 
             onChange={(e) => setInput(e.target.value)}
-            isInvalid={input.length < 3}
+            isInvalid={input.length > 0 && input.length < 3}
             aria-label="write city to check weather forecast there"
-            minLength={2}
+            minLength={3} //browser has automatic text (if not overridden by Form.Control.Feedback), the 3 is for screenreader
             required
           />
+        <Form.Control.Feedback type="invalid" className="text-danger">Too short text</Form.Control.Feedback>
         </Form.Group>
 
-        <Button variant="primary" type="submit">Submit</Button>
+        <Button variant="primary" type="submit" disabled={input.length < 3}>Submit</Button>
       </Form>
 
     </div>

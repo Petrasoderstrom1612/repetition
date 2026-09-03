@@ -3,10 +3,11 @@ import weather from "../assets/weather.jpg"
 import type { CurrentWeather } from '../services/OWMAPI.types'
 
 interface ForecastProps {
-    currentWeather: CurrentWeather | null
+    currentWeather: CurrentWeather;
+    units: string;
 }
 
-const Forecast: React.FC<ForecastProps> = ({currentWeather}) => {
+const Forecast: React.FC<ForecastProps> = ({currentWeather, units}) => {
 console.log("CUR",currentWeather)
     return (
         <div id="current weather">
@@ -17,7 +18,7 @@ console.log("CUR",currentWeather)
                         <span id="city">{currentWeather ? currentWeather.name : "CITY"}</span>, <span id="country">{currentWeather ? currentWeather.sys.country : "Country"}</span>
                     </h5>
                     <p className="temp">
-                        <span id="temperature">{currentWeather ? currentWeather.main.temp : "TEMP"}</span>&deg;C
+                        <span id="temperature">{currentWeather ? currentWeather.main.temp : "TEMP"}</span>{units === "metric" ? "F" : "°C"}
                     </p>
                     <p className="humidity">
                         <span id="humidity">{currentWeather ? currentWeather.main.humidity : "HUMIDITY"}</span>% humidity

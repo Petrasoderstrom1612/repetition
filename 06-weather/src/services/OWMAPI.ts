@@ -14,11 +14,11 @@ const BASE_URL = "https://api.openweathermap.org/data/2.5"
 *  @return Current weather conditions
 */
 
-export const getCurrentWeather = async (city: string) => {
+export const getCurrentWeather = async (city: string, units: string) => {
     const res = await axios.get<CurrentWeather>(BASE_URL + "/weather",
         { params: {
             q: city,
-            units: "metric",
+            units: units,
             appid: API_KEY,
         },}
     )
