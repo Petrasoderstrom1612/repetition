@@ -1,6 +1,6 @@
 import './assets/scss/App.scss'
 // import { useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Alert, Button } from 'react-bootstrap'
 import { useState } from 'react'
 import {getCurrentWeather} from "./services/OWMAPI"
 import Forecast from './components/Forecast'
@@ -17,6 +17,7 @@ function App() {
 
   const getData = async (city: string, units: string) => {
     try{
+      setError(false)
       setIsLoading(true)
       console.log("Units", units)
       const data = await getCurrentWeather(city, units)
@@ -57,7 +58,9 @@ function App() {
         <Button onClick={selectUnits}>{units === "metric" ? "°C" : "F"}</Button>
         <hr/>
         <SearchCity onSearch={handleSearch} units={units}/>
-        {currentWeather && <Forecast currentWeather={currentWeather} units={units}/>}
+        {isLoading && <p>loading</p>}
+        {error && <Alert>The city you've been searching for does not exist. controll your spelling</Alert>}
+        {!error && !isLoading && currentWeather && <Forecast currentWeather={currentWeather} units={units}/>}
       </section>
   )
 }
