@@ -36,7 +36,7 @@ function App() {
       const data = await getCurrentWeather(city, units) //contact with API
       setCurrentWeather(data)
     } catch (err){
-      if (err instanceof Error){
+      if (err instanceof Error){ //class Error has .message and other properties on it
         setError(err.message)
       } else {
         setError("something unexpected happened")
