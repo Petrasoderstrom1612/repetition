@@ -8,12 +8,12 @@ import type { CurrentWeather } from './services/OWMAPI.types'
 import SearchCity from './components/SearchCity'
 import "./services/OWMAPI"
 import Loader from './components/Loader'
-import WeatherIcon from './components/WeatherIcon'
+
 
 function App() {
-  const [currentWeather, setCurrentWeather] = useState<CurrentWeather|null>(null)
+  const [currentWeather, setCurrentWeather] = useState<CurrentWeather|null>(null) //null is falsy and helps us with displaying data in jsx
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string|false>(false)
+  const [error, setError] = useState<string|false>(false) //to either check truthfulness === false or give it your own message or use axios error.message
   const [units, setUnits] = useState<"metric"|"imperial">("metric")
   const [city, setCity] = useState("")
 
@@ -28,10 +28,12 @@ function App() {
   }
 
   const handleSearch = async (city: string, units: string) => {
+    setCurrentWeather(null)
+    setError(false)
+    setIsLoading(true)
     setCity(city)
-        try{
-      setError(false)
-      setIsLoading(true)
+
+    try{
       console.log("Units", units)
       const data = await getCurrentWeather(city, units) //contact with API
       setCurrentWeather(data)
@@ -53,12 +55,9 @@ function App() {
         <hr/>
         <SearchCity onSearch={handleSearch} units={units}/>
         {isLoading && <Loader/>}
-        {error && <Alert>The city you've been searching for does not exist. controll your spelling</Alert>}
+        {error && <Alert variant="danger">{error}</Alert>}
         {!error && !isLoading && currentWeather && 
-        <>
           <Forecast currentWeather={currentWeather} units={units}/>
-          <WeatherIcon currentWeather={currentWeather}/>
-        </>
         }
       </section>
   )

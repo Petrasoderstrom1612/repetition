@@ -1,6 +1,7 @@
 import { Card } from 'react-bootstrap';
 import weather from "../assets/weather.jpg"
 import type { CurrentWeather } from '../services/OWMAPI.types'
+import WeatherIcon from '../components/WeatherIcon'
 
 interface ForecastProps {
     currentWeather: CurrentWeather;
@@ -27,6 +28,7 @@ console.log("CUR",currentWeather)
                         <span id="windspeed">{currentWeather ? currentWeather.wind.speed : "WIND_SPEED"}</span>m/s
                     </p>
                 </div>
+            <WeatherIcon currentWeather={currentWeather}/>               
             </Card>
         </div>
     )

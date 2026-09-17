@@ -8,7 +8,7 @@ const WeatherIcon: React.FC<WeatherIconProps> = ({currentWeather}) => {
    console.log("ICON",currentWeather.weather)
 
    const icons = currentWeather.weather.map(oneIcon => 
-    <img src={`https://openweathermap.org/payload/api/media/file/${oneIcon.icon}`} alt={oneIcon.description}/>
+    <img src={`https://openweathermap.org/img/wn/${oneIcon.icon}@2x.png`} alt={oneIcon.description}/>
    )
 
     return (
