@@ -52,8 +52,9 @@ function App() {
 
   return (
       <section id="app">
+        <h1>Temperature in {units === "metric" ? "°C" : "Fh"}</h1>
         <p>Switch to:</p>
-        <Button onClick={selectUnits}>{units === "metric" ? "°C" : "Fh"}</Button>
+        <Button onClick={selectUnits}>{units === "metric" ? "Fh" : "°C"}</Button>
         <hr/>
         <SearchCity onSearch={handleSearch} units={units}/>
         {isLoading && <Loader/>}

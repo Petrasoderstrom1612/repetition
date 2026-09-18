@@ -9,6 +9,8 @@ interface ForecastProps {
 }
 
 const Forecast: React.FC<ForecastProps> = ({currentWeather, units}) => {
+const recalculatedTemperature = units === "metric" ? currentWeather.main.temp : currentWeather.main.temp * 9/5 + 32
+
 console.log("CUR",currentWeather)
     return (
         <div id="current weather">
@@ -19,7 +21,7 @@ console.log("CUR",currentWeather)
                         <span id="city">{currentWeather ? currentWeather.name : "CITY"}</span>, <span id="country">{currentWeather ? currentWeather.sys.country : "Country"}</span>
                     </h5>
                     <p className="temp">
-                        <span id="temperature">{currentWeather ? currentWeather.main.temp : "TEMP"}</span>{units === "metric" ? "F" : "°C"}
+                        <span id="temperature">{currentWeather ?  recalculatedTemperature.toFixed(1) : "TEMP"}</span>{units === "metric" ? "°C" : "F"}
                     </p>
                     <p className="humidity">
                         <span id="humidity">{currentWeather ? currentWeather.main.humidity : "HUMIDITY"}</span>% humidity
