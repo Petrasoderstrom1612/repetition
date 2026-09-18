@@ -35,7 +35,7 @@ const SearchCity: React.FC<SearchCityProps> = ({onSearch, units}) => {
         <Form.Control.Feedback type="invalid" className="text-danger">Too short text</Form.Control.Feedback>
         </Form.Group>
 
-        <Button variant="primary" type="submit" disabled={input.length < 3}>Submit</Button>
+        <Button variant="primary" className="search-btn" type="submit" disabled={input.length < 3}>Submit</Button>
       </Form>
 
     </div>

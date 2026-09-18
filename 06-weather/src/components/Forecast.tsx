@@ -27,6 +27,9 @@ console.log("CUR",currentWeather)
                     <p className="wind">
                         <span id="windspeed">{currentWeather ? currentWeather.wind.speed : "WIND_SPEED"}</span>m/s
                     </p>
+                    <p>
+                        <span>{currentWeather ? new Date(currentWeather.dt * 1000).toLocaleTimeString() : ""}</span>
+                    </p>
                 </div>
             <WeatherIcon currentWeather={currentWeather}/>               
             </Card>
