@@ -24,7 +24,9 @@ function App() {
   const selectUnits = () => {
     const newUnits = units === "metric" ? "imperial" : "metric"
     setUnits(newUnits)
-    handleSearch(city,newUnits)
+    if(city){
+      handleSearch(city,newUnits)
+    }
   }
 
   const handleSearch = async (city: string, units: string) => {
@@ -51,7 +53,7 @@ function App() {
   return (
       <section id="app">
         <p>Switch to:</p>
-        <Button onClick={selectUnits}>{units === "metric" ? "°C" : "F"}</Button>
+        <Button onClick={selectUnits}>{units === "metric" ? "°C" : "Fh"}</Button>
         <hr/>
         <SearchCity onSearch={handleSearch} units={units}/>
         {isLoading && <Loader/>}
