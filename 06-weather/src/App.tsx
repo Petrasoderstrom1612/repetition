@@ -24,7 +24,7 @@ function App() {
   const selectUnits = () => {
     const newUnits = units === "metric" ? "imperial" : "metric"
     setUnits(newUnits)
-    handleSearch(city,units)
+    handleSearch(city,newUnits)
   }
 
   const handleSearch = async (city: string, units: string) => {
