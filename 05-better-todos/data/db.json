@@ -22,13 +22,13 @@
     {
       "title": "sss",
       "likes": 0,
-      "done": false,
+      "done": true,
       "id": 4
     },
     {
       "title": "fff",
       "likes": 0,
-      "done": true,
+      "done": false,
       "id": 5
     },
     {

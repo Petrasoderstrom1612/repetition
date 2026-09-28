@@ -20,8 +20,8 @@ function TodosPage() {
   const [posts, setPosts] = useState<Post[]|null>(null) 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string|false>(false)
-  const incompletedPosts = posts?.filter(post => !post.done) ?? [];
-  const completedPosts = posts?.filter(post => post.done) ?? [];
+  // const incompletedPosts = posts?.filter(post => !post.done) ?? [];
+  // const completedPosts = posts?.filter(post => post.done) ?? [];
   const doneCount = posts?.filter(p => p.done).length ?? [];
 
  
@@ -136,11 +136,11 @@ function TodosPage() {
     isLoading ? (<p>loading...</p>) :
     posts && posts.length ?
       (  <>
-          <h2 className="h5 mb-2">"Done stuff"</h2>
+          {/* <h2 className="h5 mb-2">"Done stuff"</h2>
           <TodosList handleLike={addLike} removePost={deletePost} changeDone={toggleDone} posts={incompletedPosts}/>
-          <hr/>
+          <hr/> */}
           <h2 className="h5 mb-2">"To do stuff"</h2>
-          <TodosList handleLike={addLike} removePost={deletePost} changeDone={toggleDone} posts={completedPosts}/>
+          <TodosList handleLike={addLike} removePost={deletePost} changeDone={toggleDone} posts={posts}/>
           <p className="text-muted"> {doneCount} of {posts.length} completed</p>
           </>
       ) : (<p>No posts...</p>)}

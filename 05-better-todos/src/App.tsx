@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/todos" element={<TodosPage />} />
-          <Route path="/todos/:id" element={<TodoPage />} />
+          <Route path="/todos/:car" element={<TodoPage />} />
           <Route path="*" element={<PageNotFound/>}/>
         </Routes>
       </Container>
