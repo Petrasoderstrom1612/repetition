@@ -2,12 +2,15 @@
 import { createTodoAxios, completeToggleTodoAxios, deleteTodoAxios, getTodosAxios, likeTodoAxios } from '../services/TodosAPI'
 import { useEffect, useState } from 'react'
 import Counter from '../components/Counter'
-// import Clicker from './components/Clicker'
 import AddNewTodoForm from '../components/AddNewTodoForm'
 import Container from 'react-bootstrap/Container' //it is recommended to use this way of import with the /Component at the end - saver so Bootstrap works in all browsers
 import type {Post} from "../types/Todo.types" // do not forget type!!! (you can also have { type X, Y Z}) if you want to group them
-import TodosList from '../components/TodosList'
 import Alert from 'react-bootstrap/esm/Alert'
+import ListGroup from 'react-bootstrap/ListGroup'
+import { Link } from 'react-router'
+// import TodosList from '../components/TodosList'
+// import TodosListItem from "../components/TodosListItem"
+// import Clicker from './components/Clicker'
 
 // const storedPosts = localStorage.getItem("localStoragePosts")
 // const initialPosts: Post[] = storedPosts ? JSON.parse(storedPosts): [] //you have to have the storedPosts in a separate variable, otherwise Typescript believes it can be null if you place it in this line, it believes you are doing 2 function calls and could parse null
@@ -22,7 +25,7 @@ function TodosPage() {
   const [error, setError] = useState<string|false>(false)
   // const incompletedPosts = posts?.filter(post => !post.done) ?? [];
   // const completedPosts = posts?.filter(post => post.done) ?? [];
-  const doneCount = posts?.filter(p => p.done).length ?? [];
+  // const doneCount = posts?.filter(p => p.done).length ?? [];
 
  
   const getData = async () => {
@@ -129,19 +132,34 @@ function TodosPage() {
     }
   }
 
+  console.log(toggleDone, addLike, deletePost)
+
   return (
   <Container>
   <>
     {error ? (<Alert variant="danger">{error}</Alert>) :
     isLoading ? (<p>loading...</p>) :
     posts && posts.length ?
-      (  <>
+      (  <>D
           {/* <h2 className="h5 mb-2">"Done stuff"</h2>
           <TodosList handleLike={addLike} removePost={deletePost} changeDone={toggleDone} posts={incompletedPosts}/>
           <hr/> */}
-          <h2 className="h5 mb-2">"To do stuff"</h2>
-          <TodosList handleLike={addLike} removePost={deletePost} changeDone={toggleDone} posts={posts}/>
-          <p className="text-muted"> {doneCount} of {posts.length} completed</p>
+          <ListGroup className="todolist mb-3">
+            {posts.map(post => 
+              <ListGroup.Item key={post.id} 
+              className={`${post.done ? "completed" : ""} mb-3`} 
+              action //this means it is clickable
+              as={Link}
+              to={"/todos/" + post.id}
+              // onClick={() => changeDone(post.id, post.done)}
+              >
+                <span className="todo-title">{post.title} {post.likes} likes</span>
+              {/* <div>
+                  <Button size="sm" variant="outline-warning" onClick={(e) => {e.stopPropagation(); handleLike(post.id, post.likes)}}>👍🏻</Button>
+                  <Button size="sm" variant="outline-danger" onClick={(e) => {e.stopPropagation(); removePost(post.id)}}>❌</Button>
+              </div> */}
+              </ListGroup.Item> )}
+          </ListGroup>
           </>
       ) : (<p>No posts...</p>)}
   </>

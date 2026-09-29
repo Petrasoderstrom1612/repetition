@@ -8,6 +8,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Navigation from './components/Navigation'
 
 function App() {
+
   return (
     <>
       <Navigation />
@@ -16,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/todos" element={<TodosPage />} />
-          <Route path="/todos/:car" element={<TodoPage />} />
+          <Route path="/todos/:id" element={<TodoPage/>} />
           <Route path="*" element={<PageNotFound/>}/>
         </Routes>
       </Container>
